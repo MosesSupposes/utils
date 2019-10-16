@@ -12,7 +12,7 @@ export const curry = (fn, seen = []) => (...args) =>
 
 
 // This function strictly accepts one argument at a time.
-export const curryStrict (fn, arity = fn.length) {
+export const curryStrict = (fn, arity = fn.length) => {
     return (function nextCurried(prevArgs) {
     	return function curried(nextArg) {
 	    var args = prevArgs.concat([nextArg])
@@ -76,11 +76,37 @@ export const unary = fn => arg1 => fn(arg1)
        const [err, data] = getAllEntries()
    This prevents the awaited promise from silently exiting your function if the promise rejects.
 */
-export const withCatch = promise => 
-    promise
+export const withCatch = promise => {
+    return promise
         .then(data => [null, data])
         .catch(err => [err])
+}
 
+/*
+    This function is useful for validating whether required fields exist on an object.
+    You pass it an array of strings and/or arrays of strings (each sub-array representing nested fields)
+    
+    Usage: 
+        const request = {
+            body: {
+                token: 'fjdlkfjaklhfewiofiweohi.fdsiohfoiwe.jfdsafjoew',
+                user: {
+                    username: 'moses',
+                    password: 'password',
+                    role: 'admin'
+                }
+            }
+        }
+​
+validateFields(['token', ['user', 'role']], request.body) // returns true
+ */
+function validateFields(fields, obj) {
+    return fields.every(field => {
+        return field instanceof Array 
+            ?  eval('obj.' + field.join('.') + ' !== undefined')
+            : eval ('obj.' + field + ' !== undefined')
+    })
+}
 
 /**
  * Showing off
