@@ -51,15 +51,15 @@ export const foldr = curry(
 )
 
 export const reduceObj = curry(
-    (reducerFn, initialValue, o) => Object.values(o).reduce(reducerFn, initialValue)
+    (reducerFn, initialValue, obj) => Object.entries(obj).reduce(reducerFn, initialValue)
 )
 
-export const filterObj = curry(function agnosticFilter(predicateFn, o) {
+export const filterObj = curry((predicateFn, obj) => {
     const newObj = {}
     
-	Object.keys(o)
-	.filter(key => predicateFn(o[key]))
-    .forEach(key => newObj[key] = o[key])
+	Object.entries(obj)
+	.filter( ([key, value]) => predicateFn(key, value) )
+	.forEach( ([key,value]) => newObj[key] = value)
     
 	return newObj
 })
