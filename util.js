@@ -25,7 +25,7 @@ export const curryStrict = (fn, arity = fn.length) => {
     })([])
 }
 
-export const pluck = field => o => o[field]        
+export const prop = field => o => o[field]        
         
 export const map = curry((fn, value) => value.map(fn))
 
@@ -131,7 +131,7 @@ export const map9000 = (fn, [head, ...tail]) => (
       : [fn(head), ...map9000(fn, tail)]
 )
 
-export const compose9000 = (...fns) => (...args) => fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0]
+export const compose9000 = (...fns) => (...args) => fns.reduceRight((acc, fn) => [fn.call(null, ...acc)], args)[0]
 
 export const filter9000 = (pred, [head, ...tail]) => head === undefined ? [] : (
     pred(head) ?
