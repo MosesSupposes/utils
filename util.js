@@ -42,9 +42,22 @@ export const reduce = curry((reducerFn, initialValue, arr) => {
     return accumulator
 })
 
-export const pipe = (...fns) => i => fns.reduce((acc, fn) => fn(acc), i)
+export const pipe = (...fns) => initialValue => fns.reduce((acc, fn) => fn(acc), initialValue)
 
-export const compose = (...fns) => i => fns.reduceRight((acc, fn) => fn(acc), i)
+// This utility (and its counterpart, composePromises), make it so that you can compose functions that can accept either promises 
+// or non-promise values as inputs without having to be promise-aware. Instead of writing conditional logic to handle 
+// various inputs (promises vs. other data-types) and then conditionally returning a promise, or defaulting to doing the 
+// ceremony of `Promise.resolve(arg).then(// function logic)` inside of all the functions in your pipeline -- which unnecessarily
+// complicates your code -- you could instead put your regular, promise-agnostic functions in the pipeline
+// and they'll compose hassle-free. Because this utility returns a promise as its final value, you could also chain a 
+// `.catch()` or a `.finally()` onto the end of it (like so: `pipePromises(fn1, fn2, fn3).catch(fn4)` ).
+export const pipePromises = (...fns) => initialValue => fns.reduce((acc, fn) => Promise.resolve(acc).then(fn), initialValue)
+
+export const compose = (...fns) => initialValue => fns.reduceRight((acc, fn) => fn(acc), initialValue)
+
+// This function is useful for composing promise-agnostic functions with inputs that could potentially contain a promise.
+// (See `pipePromises` for a more detailed explanation.)
+export const composePromises = (...fns) => initialValue => fns.reduceRight((acc, fn) => Promise.resolve(acc).then(fn), initialValue)
 
 export const foldr = curry(
   (reducerFn, initialValue, arr) =>  reduce(arr.reverse(), reducerFn, initialValue)
