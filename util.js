@@ -121,6 +121,9 @@ function validateFields(fields, obj) {
     })
 }
 
+// Generates random colors any time it's called
+const randomColor = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
 /**
  * Showing off
  */
