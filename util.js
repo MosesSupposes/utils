@@ -92,7 +92,7 @@ export const withCatch = promise => {
 ​
 validateFields(['token', ['user', 'role']], request.body) // returns true
  */
-function validateFields(fields, obj) {
+export function validateFields(fields, obj) {
     return fields.every(field => {
         return field instanceof Array 
             ?  eval('obj.' + field.join('.') + ' !== undefined')
@@ -100,5 +100,5 @@ function validateFields(fields, obj) {
     })
 }
 
-// Generates random colors any time it's called
-const randomColor = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+// Generates a random hex value any time it's called
+export const randomColor = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
