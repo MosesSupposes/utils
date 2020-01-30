@@ -8,21 +8,6 @@ export const curry = (fn, seen = []) => (...args) =>
     ? fn(...seen, ...args)
     : curry(fn, [...seen, ...args])
 
-
-// This function strictly accepts one argument at a time.
-export const curryStrict = (fn, arity = fn.length) => {
-    return (function nextCurried(prevArgs) {
-    	return function curried(nextArg) {
-	    var args = prevArgs.concat([nextArg])
-	    if (args.length >= arity) {
-	        return fn(...args)
-	    } else {
-	        return nextCurried(args)
-	    }
-	}
-    })([])
-}
-
 export const prop = field => o => o[field]        
         
 export const map = curry((fn, value) => value.map(fn))
