@@ -1,15 +1,15 @@
-test('returns an object', () => {
-    
-})
-
-test('is curryable', () => {
+it('returns an object', () => {
 
 })
 
-test('filters out the specified property from the object', () => {
+it('is curryable', () => {
 
 })
 
-test('doesn\'t mutate the original object', () => {
+it('filters out the specified property from the object', () => {
+
+})
+
+it('doesn\'t mutate the original object', () => {
 
 })

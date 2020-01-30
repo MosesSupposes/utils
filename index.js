@@ -63,9 +63,7 @@ export const filterObj = curry((predicateFn, obj) => {
 // Return a copy of an object without a specific key
 // TODO: accept an array of keys to filter out
 export const without = curry((prop, obj) => {
-    return filterObj( 
-        function predicate(key, val) { return key !== prop }, obj
-    )
+    return filterObj( function predicate(key, val) { return key !== prop }, obj )
 }) 
 
 export const objectFromEntries = (arr) => Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v }) ))
