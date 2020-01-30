@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/MosesSupposes/utils/issues"
   },
-  "homepage": "https://github.com/MosesSupposes/utils#readme"
+  "homepage": "https://github.com/MosesSupposes/utils#readme",
+  "devDependencies": {
+    "jest": "^25.1.0"
+  }
 }
