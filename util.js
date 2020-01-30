@@ -1,3 +1,8 @@
+/* Disclaimer: 
+    The majority of the functions found in this file are taken directly from 
+    other sources. These are just a bag of tricks that I find generally useful.
+*/
+
 export const curry = (fn, seen = []) => (...args) =>
   fn.length === args.length + seen.length
     ? fn(...seen, ...args)
