@@ -54,11 +54,17 @@ export const filterObj = curry((predicateFn, obj) => {
     const newObj = {}
     
 	Object.entries(obj)
-	.filter( ([key, value]) => predicateFn(key, value) )
-	.forEach( ([key,value]) => newObj[key] = value)
+        .filter( ([key, value]) => predicateFn(key, value) )
+        .forEach( ([key,value]) => newObj[key] = value )
     
 	return newObj
 })
+
+export const without = curry((prop, obj) => {
+    return filterObj( 
+        function predicate(key, value) { return key !== prop }, obj
+     )
+}) 
 
 export const objectFromEntries = (arr) => Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v }) ))
 
