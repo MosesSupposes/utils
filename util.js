@@ -1,10 +1,3 @@
-/**
- * ======================================================
- * Title: ---- General Purpose Helpers/Utilities ----
- * Author: ---- Moses Samuel ----
-  ========================================================*/ 
-  
-
 export const curry = (fn, seen = []) => (...args) =>
   fn.length === args.length + seen.length
     ? fn(...seen, ...args)
