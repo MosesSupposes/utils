@@ -123,20 +123,3 @@ function validateFields(fields, obj) {
 
 // Generates random colors any time it's called
 const randomColor = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-
-/**
- * Showing off
- */
-
-export const map9000 = (fn, [head, ...tail]) => (
-    head === undefined && tail.length < 1
-      ? []
-      : [fn(head), ...map9000(fn, tail)]
-)
-
-export const compose9000 = (...fns) => (...args) => fns.reduceRight((acc, fn) => [fn.call(null, ...acc)], args)[0]
-
-export const filter9000 = (pred, [head, ...tail]) => head === undefined ? [] : (
-    pred(head) ?
-      [head, ...filter9000(pred, tail)] : [...filter9000(pred, tail)]
-)
