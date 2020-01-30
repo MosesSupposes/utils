@@ -79,10 +79,6 @@ export const filterObj = curry((predicateFn, obj) => {
 
 export const objectFromEntries = (arr) => Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v }) ))
 
-export const binary = fn => curry((arg1,arg2) => fn(arg1,arg2))
-
-export const unary = fn => arg1 => fn(arg1)
-
 /* This function is useful for async functions 
    Usage: 
        const getAllEntries = async (req, res) => await withCatch(Db.find())
