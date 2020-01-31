@@ -60,10 +60,28 @@ export const filterObj = curry((predicateFn, obj) => {
 	return newObj
 })
 
-// Return a copy of an object without a specific key
-// TODO: accept an array of keys to filter out
+/**
+ * Return a copy of an object without a specific key (or keys)* 
+ * @param {(string|array)} prop
+ * @param {object} obj
+ * @returns {object} 
+ * */ 
 export const without = curry((prop, obj) => {
-    return filterObj( function predicate(key, val) { return key !== prop }, obj )
+    const typeErrorMessage = "You must supply either a string or an array of strings as the prop to filter out."
+    switch (typeof prop) {
+        case "string":
+            return filterObj( function predicate(key, val) { return key !== prop }, obj )
+        case "object": 
+            if (Array.isArray(prop)) {
+                return filterObj(function predicate(key, val) { 
+                    return !prop.includes(key) 
+                }, obj)
+            } else {
+                throw new TypeError(typeErrorMessage)
+            }
+        default: 
+            throw new TypeError(typeErrorMessage)
+    }
 }) 
 
 export const objectFromEntries = (arr) => Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v }) ))
