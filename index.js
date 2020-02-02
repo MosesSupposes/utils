@@ -98,30 +98,15 @@ export const withCatch = promise => {
         .catch(err => [err])
 }
 
-/*
-    This function is useful for validating whether required fields exist on an object.
-    You pass it an array of strings and/or arrays of strings (each sub-array representing nested fields)
-    
-    Usage: 
-        const request = {
-            body: {
-                token: 'fjdlkfjaklhfewiofiweohi.fdsiohfoiwe.jfdsafjoew',
-                user: {
-                    username: 'moses',
-                    password: 'password',
-                    role: 'admin'
-                }
-            }
-        }
-​
-validateFields(['token', ['user', 'role']], request.body) // returns true
- */
-export function validateFields(fields, obj) {
-    return fields.every(field => {
-        return field instanceof Array 
-            ?  eval('obj.' + field.join('.') + ' !== undefined')
-            : eval ('obj.' + field + ' !== undefined')
-    })
+/** 
+ *  This function is useful for validating whether required fields exist on an object.
+ *  Note: The validation is shallow (i.e. it doesn't work on nested fields)
+ * @param {array} fields
+ * @param {object} obj
+*/
+
+export const validateFields = (fields=[], obj={}) => {
+    return fields.every(field => field in obj)
 }
 
 // Generates a random hex value any time it's called
