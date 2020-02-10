@@ -111,3 +111,20 @@ export const validateFields = (fields=[], obj={}) => {
 
 // Generates a random hex value any time it's called
 export const randomColor = () => '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
+// Ensure a function is only invoked once. The intial call to the function
+// gets cached, and if it's run again, that cached value gets returned.
+export const once = callback => {
+    let ran = false, memo
+    
+    return function(...args) {
+        if (ran) {
+            return memo
+        } else {
+            ran = true
+            memo = callback(...args)
+            return memo
+        }
+    }
+    
+}
