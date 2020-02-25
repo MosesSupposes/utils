@@ -104,6 +104,10 @@ export const withCatch = promise => {
 	return promise.then(data => [null, data]).catch(err => [err]);
 };
 
+export const catchErrors = (promise, errorHandler) => {
+	return promise.then(data => data).catch(errorHandler);
+};
+
 /**
  *  This function is useful for validating whether required fields exist on an object.
  *  Note: The validation is shallow (i.e. it doesn't work on nested fields)
