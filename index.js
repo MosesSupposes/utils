@@ -4,9 +4,9 @@
 */
 
 export const curry = (fn, seen = []) => (...args) =>
-	fn.length === args.length + seen.length
-		? fn(...seen, ...args)
-		: curry(fn, [...seen, ...args]);
+  fn.length === args.length + seen.length
+    ? fn(...seen, ...args)
+    : curry(fn, [...seen, ...args]);
 
 export const prop = field => o => o[field];
 
@@ -15,17 +15,21 @@ export const map = curry((fn, value) => value.map(fn));
 export const filter = curry((fn, value) => value.filter(fn));
 
 export const reduce = curry((reducerFn, initialValue, arr) => {
-	var accumulator = initialValue === undefined ? undefined : initialValue;
-	for (let i = 0; i < arr.length; i++) {
-		if (accumulator !== undefined)
-			accumulator = reducerFn(accumulator, arr[i], i, arr);
-		else accumulator = arr[i];
-	}
-	return accumulator;
+  var accumulator = initialValue === undefined ? undefined : initialValue;
+  for (let i = 0; i < arr.length; i++) {
+    if (accumulator !== undefined)
+      accumulator = reducerFn(accumulator, arr[i], i, arr);
+    else accumulator = arr[i];
+  }
+  return accumulator;
 });
 
+export const head = iterable => iterable[0];
+
+export const tail = iterable => iterable.slice(1);
+
 export const pipe = (...fns) => initialValue =>
-	fns.reduce((acc, fn) => fn(acc), initialValue);
+  fns.reduce((acc, fn) => fn(acc), initialValue);
 
 // This utility (and its counterpart, composePromises), make it so that you can compose functions that can accept either promises
 // or non-promise values as inputs without having to be promise-aware. Instead of writing conditional logic to handle
@@ -35,32 +39,32 @@ export const pipe = (...fns) => initialValue =>
 // and they'll compose hassle-free. Because this utility returns a promise as its final value, you could also chain a
 // `.catch()` or a `.finally()` onto the end of it (like so: `pipePromises(fn1, fn2, fn3).catch(fn4)` ).
 export const pipePromises = (...fns) => initialValue =>
-	fns.reduce((acc, fn) => Promise.resolve(acc).then(fn), initialValue);
+  fns.reduce((acc, fn) => Promise.resolve(acc).then(fn), initialValue);
 
 export const compose = (...fns) => initialValue =>
-	fns.reduceRight((acc, fn) => fn(acc), initialValue);
+  fns.reduceRight((acc, fn) => fn(acc), initialValue);
 
 // This function is useful for composing promise-agnostic functions with inputs that could potentially contain a promise.
 // (See `pipePromises` for a more detailed explanation.)
 export const composePromises = (...fns) => initialValue =>
-	fns.reduceRight((acc, fn) => Promise.resolve(acc).then(fn), initialValue);
+  fns.reduceRight((acc, fn) => Promise.resolve(acc).then(fn), initialValue);
 
 export const foldr = curry((reducerFn, initialValue, arr) =>
-	reduce(arr.reverse(), reducerFn, initialValue)
+  reduce(arr.reverse(), reducerFn, initialValue)
 );
 
 export const reduceObj = curry((reducerFn, initialValue, obj) =>
-	Object.entries(obj).reduce(reducerFn, initialValue)
+  Object.entries(obj).reduce(reducerFn, initialValue)
 );
 
 export const filterObj = curry((predicateFn, obj) => {
-	const newObj = {};
+  const newObj = {};
 
-	Object.entries(obj)
-		.filter(([key, value]) => predicateFn(key, value))
-		.forEach(([key, value]) => (newObj[key] = value));
+  Object.entries(obj)
+    .filter(([key, value]) => predicateFn(key, value))
+    .forEach(([key, value]) => (newObj[key] = value));
 
-	return newObj;
+  return newObj;
 });
 
 /**
@@ -71,28 +75,28 @@ export const filterObj = curry((predicateFn, obj) => {
  * */
 
 export const without = curry((prop, obj) => {
-	const typeErrorMessage =
-		"You must supply either a string or an array of strings as the prop to filter out.";
-	switch (typeof prop) {
-		case "string":
-			return filterObj(function predicate(key, val) {
-				return key !== prop;
-			}, obj);
-		case "object":
-			if (Array.isArray(prop)) {
-				return filterObj(function predicate(key, val) {
-					return !prop.includes(key);
-				}, obj);
-			} else {
-				throw new TypeError(typeErrorMessage);
-			}
-		default:
-			throw new TypeError(typeErrorMessage);
-	}
+  const typeErrorMessage =
+    "You must supply either a string or an array of strings as the prop to filter out.";
+  switch (typeof prop) {
+    case "string":
+      return filterObj(function predicate(key, val) {
+        return key !== prop;
+      }, obj);
+    case "object":
+      if (Array.isArray(prop)) {
+        return filterObj(function predicate(key, val) {
+          return !prop.includes(key);
+        }, obj);
+      } else {
+        throw new TypeError(typeErrorMessage);
+      }
+    default:
+      throw new TypeError(typeErrorMessage);
+  }
 });
 
 export const objectFromEntries = arr =>
-	Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v })));
+  Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v })));
 
 /* This function is useful for async functions 
    Usage: 
@@ -101,11 +105,11 @@ export const objectFromEntries = arr =>
    This prevents the awaited promise from silently exiting your function if the promise rejects.
 */
 export const withCatch = promise => {
-	return promise.then(data => [null, data]).catch(err => [err]);
+  return promise.then(data => [null, data]).catch(err => [err]);
 };
 
 export const catchErrors = (promise, errorHandler) => {
-	return promise.then(data => data).catch(errorHandler);
+  return promise.then(data => data).catch(errorHandler);
 };
 
 /**
@@ -116,31 +120,31 @@ export const catchErrors = (promise, errorHandler) => {
  */
 
 export const validateFields = (fields = [], obj = {}) => {
-	return fields.every(field => field in obj);
+  return fields.every(field => field in obj);
 };
 
 // Generates a random hex value any time it's called
 export const randomColor = () =>
-	"#" + ((Math.random() * 0xffffff) << 0).toString(16);
+  "#" + ((Math.random() * 0xffffff) << 0).toString(16);
 
 // Ensure a function is only invoked once. The intial call to the function
 // gets cached, and if it's run again, that cached value gets returned.
 export const once = callback => {
-	let ran = false,
-		memo;
+  let ran = false,
+    memo;
 
-	return function(...args) {
-		if (ran) {
-			return memo;
-		} else {
-			ran = true;
-			memo = callback(...args);
-			return memo;
-		}
-	};
+  return function(...args) {
+    if (ran) {
+      return memo;
+    } else {
+      ran = true;
+      memo = callback(...args);
+      return memo;
+    }
+  };
 };
 
 // Map a collection and then reduce it.
 export const foldMap = curry((mapperFn, reducerFn, arr) => {
-	return arr.map(mapperFn).reduce(reducerFn);
+  return arr.map(mapperFn).reduce(reducerFn);
 });
