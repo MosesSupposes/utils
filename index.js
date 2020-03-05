@@ -8,26 +8,6 @@ export const curry = (fn, seen = []) => (...args) =>
     ? fn(...seen, ...args)
     : curry(fn, [...seen, ...args]);
 
-export const prop = field => o => o[field];
-
-export const map = curry((fn, value) => value.map(fn));
-
-export const filter = curry((fn, value) => value.filter(fn));
-
-export const reduce = curry((reducerFn, initialValue, arr) => {
-  var accumulator = initialValue === undefined ? undefined : initialValue;
-  for (let i = 0; i < arr.length; i++) {
-    if (accumulator !== undefined)
-      accumulator = reducerFn(accumulator, arr[i], i, arr);
-    else accumulator = arr[i];
-  }
-  return accumulator;
-});
-
-export const head = iterable => iterable[0];
-
-export const tail = iterable => iterable.slice(1);
-
 export const pipe = (...fns) => initialValue =>
   fns.reduce((acc, fn) => fn(acc), initialValue);
 
@@ -48,6 +28,36 @@ export const compose = (...fns) => initialValue =>
 // (See `pipePromises` for a more detailed explanation.)
 export const composePromises = (...fns) => initialValue =>
   fns.reduceRight((acc, fn) => Promise.resolve(acc).then(fn), initialValue);
+
+export const prop = field => o => o[field];
+
+export const head = iterable => iterable[0];
+
+export const tail = iterable => iterable.slice(1);
+
+export const map = curry((fn, arr) => {
+  function _map(mapped, arr) {
+    if (arr.length === 0) {
+      return mapped;
+    }
+    return _map([...mapped, compose(fn, head)(arr)], tail(arr));
+  }
+  return _map([], arr);
+});
+
+export const fmap = curry((fn, value) => value.map(fn));
+
+export const filter = curry((fn, value) => value.filter(fn));
+
+export const reduce = curry((reducerFn, initialValue, arr) => {
+  var accumulator = initialValue === undefined ? undefined : initialValue;
+  for (let i = 0; i < arr.length; i++) {
+    if (accumulator !== undefined)
+      accumulator = reducerFn(accumulator, arr[i], i, arr);
+    else accumulator = arr[i];
+  }
+  return accumulator;
+});
 
 export const foldr = curry((reducerFn, initialValue, arr) =>
   reduce(arr.reverse(), reducerFn, initialValue)
