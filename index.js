@@ -3,10 +3,11 @@
     other sources. These are just a bag of tricks that I find generally useful.
 */
 
-export const curry = (fn, seen = []) => (...args) =>
-  fn.length >= args.length + seen.length
-    ? fn(...seen, ...args)
-    : curry(fn, [...seen, ...args]);
+export const curry = fn => function currify(...args) {
+  return args.length >= fn.length
+    ? fn.apply(null, args)
+    : currify.bind(null, ...args);
+};
 
 export const pipe = (...fns) => initialValue =>
   fns.reduce((acc, fn) => fn(acc), initialValue);
