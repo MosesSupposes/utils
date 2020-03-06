@@ -60,8 +60,20 @@ export const reduce = curry((reducerFn, initialValue, arr) => {
 });
 
 export const foldr = curry((reducerFn, initialValue, arr) =>
-  reduce(arr.reverse(), reducerFn, initialValue)
+  reduce(reducerFn, initialValue, arr.reverse())
 );
+
+export const foldl = curry((reducerFn, initialValue, arr) => {
+  function _foldl(folded, arr) {
+    return arr.length === 0
+      ? folded
+      : _foldl(compose(reducerFn.bind(null, folded), head)(arr), tail(arr));
+  }
+
+  return initialValue
+    ? _foldl(initialValue, arr)
+    : _foldl(head(arr), tail(arr));
+});
 
 export const reduceObj = curry((reducerFn, initialValue, obj) =>
   Object.entries(obj).reduce(reducerFn, initialValue)
