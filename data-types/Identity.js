@@ -3,3 +3,5 @@ const Id = x => ({
   fold: f => f(x),
   toString: () => `Id(${x})`
 });
+
+export default Id;
