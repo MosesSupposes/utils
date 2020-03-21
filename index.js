@@ -33,7 +33,7 @@ export const compose = (...fns) => initialValue =>
 export const composePromises = (...fns) => initialValue =>
 	fns.reduceRight((acc, fn) => Promise.resolve(acc).then(fn), initialValue);
 
-export const prop = field => o => o[field];
+export const prop = curry((field, o) => o[field]);
 
 export const head = iterable => iterable[0];
 
