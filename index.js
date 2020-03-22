@@ -124,16 +124,27 @@ export const without = curry((prop, obj) => {
 export const objectFromEntries = arr =>
 	Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v })));
 
-/* This function is useful for async functions 
-   Usage: 
-       const getAllEntries = async (req, res) => await withCatch(Db.find())
-       const [err, data] = getAllEntries()
-   This prevents the awaited promise from silently exiting your function if the promise rejects.
-*/
+/* This function wraps around a promise value and catches its 
+	 rejection value if it rejects.
+
+ 	 Usage: (Db.Users.findAll returns a promise)
+		 const [err, users] = withCatch(Db.Users.findAll())
+		 if (err) {
+			 console.log(err)
+		 } else {
+			 res.status(200).json(users)
+		 }
+ */
 export const withCatch = promise => {
-	return promise.then(data => [null, data]).catch(err => [err]);
+	return promise.then(data => [null, data]).catch(err => [err, null]);
 };
 
+/* This function works similary to withCatch, except it accepts an 
+	 error handler upfront. 
+
+	 Usage: (Db.Users.findAll() returns a promise) 
+	 	const usersOrError = catchErrors(Db.Users.findAll(), console.error)	
+*/
 export const catchErrors = (promise, errorHandler) => {
 	return promise.then(data => data).catch(errorHandler);
 };
