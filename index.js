@@ -187,7 +187,7 @@ export const foldMap = curry((mapperFn, reducerFn, arr) => {
 });
 
 // Return a Left if it's null, and a Right if not null.
-export const fromNullable = curry((x, errMsg) =>
+export const fromNullable = curry((x, errMsg = null) =>
 	x != null ? Right(x) : Left(errMsg)
 );
 
