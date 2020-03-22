@@ -187,7 +187,9 @@ export const foldMap = curry((mapperFn, reducerFn, arr) => {
 });
 
 // Return a Left if it's null, and a Right if not null.
-export const fromNullable = x => (x != null ? Right(x) : Left());
+export const fromNullable = curry((x, errMsg) =>
+	x != null ? Right(x) : Left(errMsg)
+);
 
 // The function equivalent of a try-catch block.
 export const tryCatch = f => {
