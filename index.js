@@ -170,7 +170,7 @@ export const once = callback => {
 	let ran = false,
 		memo;
 
-	return function(...args) {
+	return function (...args) {
 		if (ran) {
 			return memo;
 		} else {
@@ -199,3 +199,39 @@ export const tryCatch = f => {
 		return Left(e);
 	}
 };
+
+/**
+ * Determines if two objects are equal by value.
+ * It also works for arrays.
+ * @param {(Object|Array)} o1
+ * @param {Object|Array} o2
+ * @returns {Boolean}
+ */
+function isEqual(o1, o2) {
+	if (Array.isArray(o1) && Array.isArray(o2)) {
+		for (let i = 0; i < o1.length; i++) {
+			if (o1[i] === o2[i]) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	} else if (typeof o1 == "object" && typeof o2 == "object") {
+		const o1Keys = Object.keys(o1);
+		const o2Keys = Object.keys(o2);
+
+		for (let i = 0; i < o1Keys.length; i++) {
+			if (o1Keys[i] == o2Keys[i]) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	} else {
+		throw new TypeError(
+			"You must pass in either an object or array to this function."
+		);
+	}
+}
