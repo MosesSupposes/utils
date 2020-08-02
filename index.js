@@ -3,7 +3,7 @@
     other sources. These are just a bag of tricks that I find generally useful.
 */
 
-import { Left, Right } from "./data-types/Either";
+// import { Left, Right } from "./data-types/Either";
 
 export const curry = fn =>
 	function currify(...args) {
@@ -235,3 +235,18 @@ function isEqual(o1, o2) {
 		);
 	}
 }
+
+export function coroutine(generator) {
+	const iterator = generator();
+	return function (...args) {
+		return iterator.next(...args);
+	};
+}
+
+// generate unique IDs indefinitely.
+export const generateIds = coroutine(function* () {
+	let id = 0;
+	while (true) {
+		yield ++id;
+	}
+});
