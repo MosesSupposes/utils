@@ -3,7 +3,7 @@
     other sources. These are just a bag of tricks that I find generally useful.
 */
 
-// import { Left, Right } from "./data-types/Either";
+import { Left, Right } from "./data-types/Either";
 
 export const curry = fn =>
 	function currify(...args) {
