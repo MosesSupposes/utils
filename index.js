@@ -250,3 +250,17 @@ export const generateIds = coroutine(function* () {
 		yield ++id;
 	}
 });
+
+export function consumeGeneratorUntilCompletion(
+	generator,
+	reducer,
+	initialValue
+) {
+	const it = generator();
+	function consume(iterator, accumulator, cb) {
+		const { value, done } = iterator.next();
+		accumulator = cb(accumulator, value);
+		return done == true ? accumulator : consume(iterator, accumulator, cb);
+	}
+	return consume(it, initialValue, reducer);
+}
