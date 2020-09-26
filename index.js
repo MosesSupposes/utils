@@ -244,7 +244,7 @@ export function coroutine(generator) {
 }
 
 // generate unique IDs indefinitely.
-export const generateIds = coroutine(function* () {
+export const generateId = coroutine(function* () {
 	let id = 0;
 	while (true) {
 		yield ++id;
